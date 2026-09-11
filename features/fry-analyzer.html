@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>French Fry Length Analyzer™</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            min-height: 100vh;
+
+            font-family: Arial, sans-serif;
+
+            background: #fff8d9;
+
+            color: #29243d;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            padding: 30px;
+
+        }
+
+
+        .container {
+
+            width: 100%;
+
+            max-width: 700px;
+
+            background: white;
+
+            padding: 45px;
+
+            border: 4px solid #29243d;
+
+            border-radius: 28px;
+
+            box-shadow: 8px 8px 0 #29243d;
+
+            text-align: center;
+
+        }
+
+
+        .badge {
+
+            display: inline-block;
+
+            background: #ffd84d;
+
+            border: 3px solid #29243d;
+
+            border-radius: 30px;
+
+            padding: 8px 18px;
+
+            font-weight: bold;
+
+            font-size: 13px;
+
+            margin-bottom: 18px;
+
+        }
+
+
+        h1 {
+
+            font-size: 40px;
+
+            margin: 10px 0 15px;
+
+        }
+
+
+        .subtitle {
+
+            color: #666;
+
+            font-size: 17px;
+
+            line-height: 1.6;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .upload-card {
+
+            background: #dff7ed;
+
+            border: 4px solid #29243d;
+
+            border-radius: 20px;
+
+            padding: 30px;
+
+        }
+
+
+        .upload-card h2 {
+
+            margin-top: 0;
+
+        }
+
+
+        .upload-card p {
+
+            color: #666;
+
+            font-size: 14px;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        input[type="file"] {
+
+            max-width: 100%;
+
+            font-size: 14px;
+
+        }
+
+
+        #preview {
+
+            display: none;
+
+            width: 300px;
+
+            max-width: 100%;
+
+            max-height: 300px;
+
+            object-fit: contain;
+
+            margin: 25px auto;
+
+            border: 4px solid #29243d;
+
+            border-radius: 15px;
+
+        }
+
+
+        button {
+
+            margin-top: 20px;
+
+            padding: 14px 25px;
+
+            background: #f45183;
+
+            color: #29243d;
+
+            border: 3px solid #29243d;
+
+            border-radius: 12px;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            box-shadow: 4px 4px 0 #29243d;
+
+        }
+
+
+        button:hover {
+
+            transform: translate(2px, 2px);
+
+            box-shadow: 2px 2px 0 #29243d;
+
+        }
+
+
+        .result {
+
+            display: none;
+
+            margin-top: 30px;
+
+            padding: 30px;
+
+            background: #eee8ff;
+
+            border: 4px solid #29243d;
+
+            border-radius: 20px;
+
+        }
+
+
+        .result-label {
+
+            font-size: 13px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 2px;
+
+        }
+
+
+        #length {
+
+            font-size: 55px;
+
+            font-weight: bold;
+
+            margin: 10px 0;
+
+        }
+
+
+        #ranking {
+
+            font-size: 28px;
+
+            font-weight: bold;
+
+            margin: 15px 0;
+
+        }
+
+
+        #message {
+
+            color: #666;
+
+            line-height: 1.6;
+
+        }
+
+
+        footer {
+
+            margin-top: 30px;
+
+            font-size: 12px;
+
+            color: #888;
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .container {
+
+                padding: 25px;
+
+            }
+
+
+            h1 {
+
+                font-size: 32px;
+
+            }
+
+        }
+
+    </style>
+
+    <style>
+        :root { --cream: #fff7dc; --navy: #241746; --pink: #f45b91; --yellow: #ffd166; --orange: #f28c52; --mint: #bfe8d0; --lavender: #d8c9f4; --white: #fffdf8; }
+
+        body { position: relative; overflow-x: hidden; font-family: "Trebuchet MS", "Gill Sans", sans-serif; background: var(--cream); color: var(--navy); }
+        body::before, body::after { content: ""; position: fixed; z-index: -1; width: 240px; height: 240px; border-radius: 48% 52% 38% 62% / 60% 42% 58% 40%; opacity: .72; }
+        body::before { top: -75px; left: -75px; background: #f8b6cf; transform: rotate(20deg); }
+        body::after { right: -75px; bottom: -85px; background: var(--lavender); transform: rotate(-14deg); }
+
+        .container { position: relative; overflow: hidden; max-width: 820px; padding: clamp(40px, 7vw, 76px); background: var(--white); border: 4px solid var(--navy); border-radius: 34px; box-shadow: 10px 12px 0 var(--navy), 0 24px 45px rgba(36, 23, 70, .16); }
+        .container::before { content: "✦  🍟  ✦"; position: absolute; top: 20px; right: 28px; color: var(--orange); font-size: 22px; letter-spacing: 6px; }
+        .container::after { content: "QUALITY CONTROL 01"; position: absolute; top: 24px; left: 30px; color: var(--pink); font-size: 10px; font-weight: 900; letter-spacing: 2px; }
+
+        .float-decor { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+        .float-food { position: absolute; z-index: 0; filter: drop-shadow(0 5px 3px rgba(36, 23, 70, .16)); animation: fryFloat 6s ease-in-out infinite; }
+        .float-one { top: 24%; left: 3%; font-size: 32px; animation-delay: -1s; }
+        .float-two { top: 40%; right: 4%; font-size: 29px; animation-delay: -3.4s; }
+        .float-three { bottom: 18%; left: 8%; font-size: 27px; animation-delay: -4.8s; }
+        .float-four { bottom: 22%; right: 11%; font-size: 33px; animation-delay: -2.2s; }
+        .float-five { top: 52%; left: 2%; font-size: 23px; animation-delay: -.3s; }
+        .container > *:not(.float-decor) { position: relative; z-index: 1; }
+
+        .badge { color: var(--navy); background: var(--yellow); border: 3px solid var(--navy); border-radius: 999px; padding: 9px 17px; font-weight: 900; letter-spacing: .5px; transform: rotate(-2deg); }
+        h1 { color: var(--navy); font-family: "Arial Rounded MT Bold", "Trebuchet MS", sans-serif; font-size: clamp(2.5rem, 7vw, 4.8rem); line-height: .95; letter-spacing: -2px; }
+        .subtitle { color: #66587f; }
+        .upload-card { background: var(--mint); border: 4px dashed var(--navy); border-radius: 24px; padding: 32px 24px; box-shadow: 5px 6px 0 var(--navy); }
+        .upload-card h2 { color: var(--navy); font-family: "Arial Rounded MT Bold", "Trebuchet MS", sans-serif; font-size: 24px; }
+        .upload-card p { color: #66587f; }
+        input[type="file"] { max-width: 100%; color: var(--navy); font-weight: 700; }
+        input[type="file"]::file-selector-button { margin-right: 10px; padding: 10px 14px; color: var(--navy); font: inherit; font-weight: 900; background: var(--yellow); border: 3px solid var(--navy); border-radius: 12px; cursor: pointer; }
+        #preview { border: 6px solid var(--navy); border-radius: 20px; box-shadow: 6px 7px 0 var(--pink); }
+        button { color: var(--navy); font-family: inherit; background: var(--pink); border: 4px solid var(--navy); border-radius: 16px; box-shadow: 5px 6px 0 var(--navy); transition: transform .18s ease, box-shadow .18s ease, background .18s ease; }
+        button:hover { background: #ff77a7; transform: translate(-2px, -3px); box-shadow: 7px 9px 0 var(--navy); }
+        button:active { transform: translate(3px, 3px); box-shadow: 2px 3px 0 var(--navy); }
+        .result { background: var(--lavender); border: 4px solid var(--navy); border-radius: 24px; box-shadow: 6px 7px 0 var(--navy); }
+        .result-label { color: var(--navy); font-weight: 900; }
+        #length { color: var(--pink); font-family: "Arial Rounded MT Bold", "Trebuchet MS", sans-serif; font-size: clamp(4rem, 12vw, 6rem); line-height: 1; text-shadow: 3px 3px 0 var(--navy); }
+        #ranking { color: var(--navy); font-family: "Arial Rounded MT Bold", "Trebuchet MS", sans-serif; }
+        #message, footer { color: #66587f; }
+        @keyframes fryFloat { 0%, 100% { transform: translate(0, 0) rotate(-7deg); } 50% { transform: translate(8px, -14px) rotate(8deg); } }
+        @media (max-width: 600px) { body { padding: 18px; } .container { padding: 32px 22px; box-shadow: 6px 7px 0 var(--navy); } .container::after { left: 20px; } }
+        @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+    <div class="float-decor" aria-hidden="true">
+        <span class="float-food float-one">🍟</span>
+        <span class="float-food float-two">🥔</span>
+        <span class="float-food float-three">🍟</span>
+        <span class="float-food float-four">✨</span>
+        <span class="float-food float-five">⭐</span>
+    </div>
+
+
+    <div class="badge">
+
+        100% UNLICENSED FRY SCIENCE
+
+    </div>
+
+
+    <h1>
+
+        🍟 French Fry Length Analyzer™
+
+    </h1>
+
+
+    <p class="subtitle">
+
+        Upload a picture of your fry and discover whether
+
+        you've found a tiny disappointment or a legendary fry.
+
+    </p>
+
+
+    <div class="upload-card">
+
+
+        <h2>
+
+            Submit Your Fry 🍟
+
+        </h2>
+
+
+        <p>
+
+            Our highly questionable laboratory is ready.
+
+        </p>
+
+
+        <input
+
+            type="file"
+
+            id="imageInput"
+
+            accept="image/*"
+
+        >
+
+
+        <img
+
+            id="preview"
+
+            alt="Uploaded French fry"
+
+        >
+
+
+        <br>
+
+
+        <button onclick="analyzeFry()">
+
+            Analyze My Fry 🍟
+
+        </button>
+
+
+    </div>
+
+
+    <div
+
+        class="result"
+
+        id="result"
+
+    >
+
+
+        <div class="result-label">
+
+            FRY LENGTH REPORT
+
+        </div>
+
+
+        <div id="length">
+
+            0 cm
+
+        </div>
+
+
+        <div id="ranking">
+
+            -
+
+        </div>
+
+
+        <p id="message">
+
+            -
+
+        </p>
+
+
+    </div>
+
+
+    <footer>
+
+        Scientifically unnecessary. Crispy nonetheless. 🍟
+
+    </footer>
+
+
+</div>
+
+
+
+<script>
+
+
+    const imageInput =
+        document.getElementById("imageInput");
+
+
+    const preview =
+        document.getElementById("preview");
+
+
+
+    // Show uploaded image
+
+    imageInput.addEventListener("change", function () {
+
+
+        const file = this.files[0];
+
+
+        if (file) {
+
+
+            const imageURL =
+                URL.createObjectURL(file);
+
+
+            preview.src = imageURL;
+
+
+            preview.style.display = "block";
+
+        }
+
+    });
+
+
+
+    function analyzeFry() {
+
+
+        const file =
+            imageInput.files[0];
+
+
+        if (!file) {
+
+
+            alert(
+                "Please upload a fry first. 🍟"
+            );
+
+
+            return;
+
+        }
+
+
+
+        /*
+            Fake Scientific Fry Analysis™
+
+            The same image file will always
+            receive the same length.
+
+            No actual fry measurement
+            is being performed.
+        */
+
+
+        const identifier =
+            file.name +
+            file.size +
+            file.lastModified;
+
+
+        let hash = 0;
+
+
+        for (
+            let i = 0;
+            i < identifier.length;
+            i++
+        ) {
+
+
+            hash =
+                ((hash << 5) - hash) +
+                identifier.charCodeAt(i);
+
+
+            hash =
+                hash | 0;
+
+        }
+
+
+
+        /*
+            Generate a fake fry length
+            between 2 cm and 15 cm.
+        */
+
+        const length =
+            (Math.abs(hash) % 131 + 20) / 10;
+
+
+        let ranking;
+
+        let message;
+
+
+
+        if (length < 4) {
+
+
+            ranking =
+                "😭 Tiny Disappointment";
+
+
+            message =
+                "We are sorry. This fry had dreams. Unfortunately, they were very short.";
+
+        }
+
+
+        else if (length < 7) {
+
+
+            ranking =
+                "😐 Respectable Fry";
+
+
+            message =
+                "Not impressive, but perfectly acceptable. It will do its job.";
+
+        }
+
+
+        else if (length < 10) {
+
+
+            ranking =
+                "😎 Long Boy";
+
+
+            message =
+                "Now THIS is starting to look like a serious fry.";
+
+        }
+
+
+        else if (length < 13) {
+
+
+            ranking =
+                "🔥 Fry of Distinction";
+
+
+            message =
+                "An unusually impressive fry. Please consider framing it.";
+
+        }
+
+
+        else {
+
+
+            ranking =
+                "👑 LEGENDARY FRY";
+
+
+            message =
+                "INCREDIBLE. This fry has achieved greatness. Historians may speak of it.";
+
+        }
+
+
+
+        document.getElementById("length").textContent =
+            length.toFixed(1) + " cm";
+
+
+        document.getElementById("ranking").textContent =
+            ranking;
+
+
+        document.getElementById("message").textContent =
+            message;
+
+
+        document.getElementById("result").style.display =
+            "block";
+
+    }
+
+
+</script>
+
+
+</body>
+
+</html>

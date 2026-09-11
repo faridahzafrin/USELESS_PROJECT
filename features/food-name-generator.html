@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Food Name Generator™</title>
+
+
+    <style>
+        :root {
+            --ink: #51200d;
+            --muted: #765746;
+            --accent: #d2691e;
+            --accent-dark: #8b3a0f;
+            --cream: #fcf8f2;
+            --paper: #f4eee0;
+            --line: #d6b99e;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            padding: 32px 18px;
+            display: grid;
+            place-items: center;
+            color: var(--ink);
+            font-family: "Trebuchet MS", "Gill Sans", sans-serif;
+            background:
+                radial-gradient(circle at 10% 15%, rgba(210, 105, 30, .12), transparent 25%),
+                radial-gradient(circle at 90% 85%, rgba(139, 58, 15, .09), transparent 27%),
+                repeating-linear-gradient(135deg, rgba(139, 58, 15, .025) 0 1px, transparent 1px 8px),
+                var(--cream);
+        }
+
+        .container {
+            width: min(100%, 760px);
+            position: relative;
+            overflow: hidden;
+            padding: clamp(34px, 7vw, 68px);
+            text-align: center;
+            background: var(--paper);
+            border: 2px solid #a0522d;
+            border-radius: 26px;
+            box-shadow: 0 24px 60px rgba(81, 32, 13, .16), 0 4px 12px rgba(81, 32, 13, .08);
+        }
+
+        .container::before {
+            content: "";
+            position: absolute;
+            inset: 0 0 auto;
+            height: 5px;
+            background: linear-gradient(90deg, #8b3a0f, #d2691e, #e7a35d, #8b3a0f);
+        }
+
+        .container::after {
+            content: "";
+            position: absolute;
+            top: -35%;
+            left: -18%;
+            width: 70px;
+            height: 170%;
+            background: rgba(255, 255, 255, .22);
+            transform: rotate(18deg);
+            pointer-events: none;
+            animation: cardShine 7s ease-in-out infinite;
+        }
+
+        .cartoon-decor {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .sticker {
+            position: absolute;
+            display: grid;
+            place-items: center;
+            width: 52px;
+            height: 52px;
+            font-size: 30px;
+            filter: drop-shadow(0 7px 5px rgba(81, 32, 13, .2));
+            animation: bob 3.8s ease-in-out infinite;
+        }
+
+        .sticker-leaf {
+            top: 32px;
+            left: 28px;
+            --tilt: -18deg;
+        }
+
+        .sticker-apple {
+            right: 28px;
+            bottom: 30px;
+            font-size: 34px;
+            animation-delay: -1.5s;
+            --tilt: 7deg;
+        }
+
+        .sticker-spark {
+            top: 92px;
+            right: 54px;
+            color: #d2691e;
+            font-size: 25px;
+            animation-delay: -.7s;
+            --tilt: 12deg;
+        }
+
+        .sticker-broccoli {
+            top: 30px;
+            right: 28px;
+            font-size: 31px;
+            animation-delay: -2.4s;
+            --tilt: -8deg;
+        }
+
+        .sticker-carrot {
+            bottom: 30px;
+            left: 28px;
+            font-size: 31px;
+            animation-delay: -3.1s;
+            --tilt: 14deg;
+        }
+
+        .food-sticker {
+            position: absolute;
+            z-index: 0;
+            font-size: 28px;
+            filter: drop-shadow(0 5px 3px rgba(36, 23, 70, .18));
+            animation: foodFloat 6s ease-in-out infinite;
+        }
+
+        .food-noodle { top: 23%; left: 4%; font-size: 32px; animation-delay: -1.2s; }
+        .food-dumpling { top: 31%; right: 4%; font-size: 29px; animation-delay: -3.4s; }
+        .food-pizza { bottom: 23%; right: 12%; font-size: 34px; animation-delay: -4.8s; }
+        .food-rice { bottom: 18%; left: 12%; font-size: 27px; animation-delay: -2.3s; }
+        .food-curry { top: 49%; right: 2%; font-size: 25px; animation-delay: -5.5s; }
+        .food-burger { top: 48%; left: 2%; font-size: 27px; animation-delay: -.4s; }
+
+        .motion-doodle {
+            position: absolute;
+            color: #a0522d;
+            font-size: 22px;
+            animation: zigzag 5s ease-in-out infinite;
+        }
+
+        .doodle-one { top: 150px; left: 9%; }
+        .doodle-two { right: 9%; bottom: 145px; font-size: 17px; animation-delay: -2s; }
+        .doodle-three { top: 42%; left: 4%; color: #d2691e; animation-delay: -3.5s; }
+
+        .research-stamp {
+            position: absolute;
+            top: 18px;
+            right: 76px;
+            padding: 5px 10px;
+            color: #51200d;
+            font-size: 8px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            line-height: 1.15;
+            text-align: center;
+            background: #e7a35d;
+            border: 2px solid #8b3a0f;
+            border-radius: 8px;
+            transform: rotate(-4deg);
+            box-shadow: 3px 3px 0 #8b3a0f;
+            animation: stampWiggle 4.5s ease-in-out infinite;
+        }
+
+        .small-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 18px;
+            color: var(--accent);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .small-title::before,
+        .small-title::after {
+            content: "";
+            width: 42px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent));
+        }
+
+        .small-title::after {
+            background: linear-gradient(90deg, var(--accent), transparent);
+        }
+
+        h1, #foodName {
+            font-family: "Palatino Linotype", "Book Antiqua", Georgia, serif;
+            font-weight: 400;
+        }
+
+        h1 {
+            max-width: 580px;
+            margin: 0 auto 16px;
+            font-size: clamp(2.35rem, 6vw, 4.35rem);
+            line-height: .98;
+            letter-spacing: -1.5px;
+            text-shadow: 3px 3px 0 rgba(210, 105, 30, .14);
+        }
+
+        .subtitle {
+            max-width: 480px;
+            margin: 0 auto 38px;
+            color: var(--muted);
+            font-size: 16px;
+            line-height: 1.7;
+        }
+
+        .ingredients {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            text-align: left;
+        }
+
+        .field { position: relative; }
+
+        input {
+            width: 100%;
+            padding: 18px 15px 10px;
+            color: var(--ink);
+            font: inherit;
+            font-size: 15px;
+            background: rgba(255, 252, 247, .82);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            outline: none;
+            transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+        }
+
+        input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(210, 105, 30, .18), 0 5px 14px rgba(139, 58, 15, .08);
+            transform: translateY(-2px);
+        }
+
+        input:hover:not(:focus) {
+            border-color: #c98b61;
+            box-shadow: 0 4px 12px rgba(139, 58, 15, .08);
+        }
+
+        .field label {
+            position: absolute;
+            top: 7px;
+            left: 15px;
+            color: var(--muted);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .8px;
+            text-transform: uppercase;
+            pointer-events: none;
+        }
+
+        button {
+            position: relative;
+            overflow: hidden;
+            margin-top: 26px;
+            padding: 15px 25px;
+            color: #fffaf3;
+            font: inherit;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: .2px;
+            background: var(--accent-dark);
+            border: 0;
+            border-radius: 999px;
+            box-shadow: 0 6px 0 #5f2409, 0 13px 24px rgba(81, 32, 13, .18);
+            cursor: pointer;
+            transition: background .2s ease, transform .15s ease, box-shadow .15s ease;
+        }
+
+        button:hover { background: #a0522d; transform: translateY(-2px) rotate(-1deg); box-shadow: 0 7px 0 #5f2409, 0 16px 28px rgba(139, 58, 15, .24); }
+        button:active { transform: translateY(3px); box-shadow: 0 3px 0 #5f2409, 0 6px 12px rgba(81, 32, 13, .14); }
+        button:focus-visible { outline: 3px solid rgba(210, 105, 30, .4); outline-offset: 4px; }
+
+        button::after {
+            content: "";
+            position: absolute;
+            top: -60%;
+            left: -35%;
+            width: 22px;
+            height: 220%;
+            background: rgba(255, 239, 202, .62);
+            transform: rotate(25deg);
+            animation: none;
+        }
+
+        button:hover::after { animation: shine .75s ease-in-out; }
+
+        #result {
+            display: none;
+            margin-top: 42px;
+            padding: 28px 24px;
+            background: rgba(255, 252, 247, .78);
+            border: 2px dashed #d2691e;
+            border-radius: 21px;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .8), 0 8px 20px rgba(139, 58, 15, .06);
+        }
+
+        #result.is-visible { animation: reveal .45s cubic-bezier(.2, .8, .2, 1) both; }
+
+        .result-label {
+            color: var(--accent);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        #foodName { margin: 14px 0 10px; font-size: clamp(1.8rem, 5vw, 2.7rem); line-height: 1.1; }
+        #description { max-width: 520px; margin: 0 auto; color: var(--muted); line-height: 1.65; }
+
+        footer { margin-top: 32px; color: #987b68; font-size: 11px; letter-spacing: .3px; }
+
+        @keyframes reveal {
+            from { opacity: 0; transform: translateY(10px) scale(.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        @keyframes bob {
+            0%, 100% { transform: translateY(0) rotate(var(--tilt)); }
+            50% { transform: translateY(-9px) rotate(calc(var(--tilt) + 8deg)); }
+        }
+
+        @keyframes zigzag {
+            0%, 100% { transform: translate(0, 0) rotate(0); opacity: .5; }
+            50% { transform: translate(12px, -15px) rotate(18deg); opacity: 1; }
+        }
+
+        @keyframes foodFloat {
+            0%, 100% { transform: translate(0, 0) rotate(-6deg); }
+            50% { transform: translate(8px, -14px) rotate(7deg); }
+        }
+
+        @keyframes shine {
+            0%, 35% { left: -35%; }
+            65%, 100% { left: 125%; }
+        }
+
+        @keyframes cardShine {
+            0%, 55% { left: -18%; opacity: 0; }
+            65% { opacity: 1; }
+            82%, 100% { left: 118%; opacity: 0; }
+        }
+
+        @keyframes stampWiggle {
+            0%, 88%, 100% { transform: rotate(-4deg); }
+            91% { transform: rotate(-7deg) translateY(-2px); }
+            94% { transform: rotate(1deg) translateY(0); }
+            97% { transform: rotate(-5deg); }
+        }
+
+        @media (max-width: 560px) {
+            .ingredients { grid-template-columns: 1fr; }
+            h1 { letter-spacing: -1px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { transition: none !important; animation: none !important; }
+        }
+    </style>
+
+    <style>
+        :root { --cream: #fff7dc; --navy: #241746; --pink: #f45b91; --yellow: #ffd166; --orange: #f28c52; --mint: #bfe8d0; --lavender: #d8c9f4; --white: #fffdf8; }
+        body { position: relative; overflow-x: hidden; font-family: "Trebuchet MS", "Gill Sans", sans-serif; background: var(--cream); color: var(--navy); }
+        body::before, body::after { content: ""; position: fixed; z-index: -1; width: 240px; height: 240px; border-radius: 48% 52% 38% 62% / 60% 42% 58% 40%; opacity: .7; }
+        body::before { top: -75px; left: -75px; background: #f8b6cf; transform: rotate(20deg); }
+        body::after { right: -75px; bottom: -85px; background: var(--mint); transform: rotate(-14deg); }
+        .container { width: min(100%, 820px); padding: clamp(40px, 7vw, 76px); background: var(--white); border: 4px solid var(--navy); border-radius: 34px; box-shadow: 10px 12px 0 var(--navy), 0 24px 45px rgba(36, 23, 70, .16); }
+        .container::before { background: linear-gradient(90deg, var(--pink), var(--orange), var(--yellow), var(--pink)); height: 7px; }
+        .small-title { color: var(--navy); background: var(--yellow); border: 3px solid var(--navy); border-radius: 999px; padding: 8px 14px; display: inline-block; transform: rotate(-2deg); }
+        h1 { color: var(--navy); font-family: "Arial Rounded MT Bold", "Trebuchet MS", sans-serif; font-size: clamp(2.6rem, 7vw, 4.8rem); line-height: .95; letter-spacing: -2px; }
+        .subtitle { color: #66587f; }
+        .ingredients { padding: 20px; background: var(--mint); border: 4px solid var(--navy); border-radius: 24px; box-shadow: 5px 6px 0 var(--navy); }
+        input { color: var(--navy); background: var(--white); border: 3px solid var(--navy); border-radius: 14px; }
+        input:hover:not(:focus) { border-color: var(--pink); box-shadow: 3px 4px 0 rgba(36, 23, 70, .14); }
+        input:focus { border-color: var(--pink); box-shadow: 0 0 0 4px rgba(244, 91, 145, .24), 4px 5px 0 var(--navy); }
+        .field label { color: #66587f; }
+        button { color: var(--navy); background: var(--pink); border: 4px solid var(--navy); border-radius: 16px; box-shadow: 5px 6px 0 var(--navy); }
+        button:hover { background: #ff77a7; box-shadow: 7px 9px 0 var(--navy), 0 14px 24px rgba(244, 91, 145, .22); }
+        button:active { box-shadow: 2px 3px 0 var(--navy); }
+        #result { background: var(--lavender); border: 4px solid var(--navy); border-radius: 24px; box-shadow: 6px 7px 0 var(--navy); }
+        .result-label { color: var(--navy); }
+        #foodName { color: var(--navy); font-family: "Arial Rounded MT Bold", "Trebuchet MS", sans-serif; }
+        #description, footer { color: #66587f; }
+        @media (max-width: 600px) { .container { box-shadow: 6px 7px 0 var(--navy); } .ingredients { padding: 16px; } }
+        @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+    <div class="cartoon-decor" aria-hidden="true">
+        <span class="sticker sticker-leaf">🍃</span>
+        <span class="sticker sticker-apple">🍏</span>
+        <span class="sticker sticker-spark">✦</span>
+        <span class="sticker sticker-broccoli">🥦</span>
+        <span class="sticker sticker-carrot">🥕</span>
+        <span class="food-sticker food-noodle">🍜</span>
+        <span class="food-sticker food-dumpling">🥟</span>
+        <span class="food-sticker food-pizza">🍕</span>
+        <span class="food-sticker food-rice">🍚</span>
+        <span class="food-sticker food-curry">🍛</span>
+        <span class="food-sticker food-burger">🍔</span>
+        <span class="motion-doodle doodle-one">✦</span>
+        <span class="motion-doodle doodle-two">✧</span>
+        <span class="motion-doodle doodle-three">✦</span>
+    </div>
+
+    <div class="research-stamp" aria-hidden="true">100%<br>UNNECESSARY</div>
+
+
+    <div class="small-title">
+
+        100% Unlicensed Gastronomy
+
+    </div>
+
+
+    <h1>
+
+        Food Name Generator™ 🍜
+
+    </h1>
+
+
+    <p class="subtitle">
+
+        Give us some completely ordinary ingredients.
+
+        <br>
+
+        We will give them an unnecessarily sophisticated name.
+
+    </p>
+
+
+    <div class="ingredients">
+
+        <div class="field">
+            <label for="ingredient1">First ingredient</label>
+            <input type="text" id="ingredient1" placeholder="e.g. potato">
+        </div>
+
+        <div class="field">
+            <label for="ingredient2">Second ingredient</label>
+            <input type="text" id="ingredient2" placeholder="e.g. basil">
+        </div>
+
+        <div class="field">
+            <label for="ingredient3">Third ingredient</label>
+            <input type="text" id="ingredient3" placeholder="e.g. confidence">
+        </div>
+
+    </div>
+
+
+    <button type="button" onclick="generateName()">
+
+        Make It Fancy ✨
+
+    </button>
+
+
+    <div id="result">
+
+
+        <div class="result-label">
+
+            Your unnecessarily fancy dish is:
+
+        </div>
+
+
+        <h2 id="foodName"></h2>
+
+
+        <p id="description"></p>
+
+
+    </div>
+
+
+    <footer>
+
+        No chef was consulted during this research.
+
+    </footer>
+
+
+</div>
+
+
+
+<script>
+
+
+function generateName() {
+
+
+    const ingredient1 =
+        document.getElementById("ingredient1").value.trim();
+
+
+    const ingredient2 =
+        document.getElementById("ingredient2").value.trim();
+
+
+    const ingredient3 =
+        document.getElementById("ingredient3").value.trim();
+
+
+    if (
+        ingredient1 === "" &&
+        ingredient2 === "" &&
+        ingredient3 === ""
+    ) {
+
+        alert(
+            "Please enter at least one ingredient. Even fine dining needs ingredients."
+        );
+
+        return;
+
+    }
+
+
+    const ingredients = [
+
+        ingredient1,
+        ingredient2,
+        ingredient3
+
+    ].filter(Boolean);
+
+
+    const styles = [
+
+        "Indo-European",
+
+        "Neo-Asian",
+
+        "Contemporary",
+
+        "Artisanal",
+
+        "Experimental",
+
+        "Modern",
+
+        "Heritage",
+
+        "Fusion",
+
+        "Gourmet",
+
+        "Avant-Garde"
+
+    ];
+
+
+    const endings = [
+
+        "Fusion",
+
+        "Delicacy",
+
+        "Creation",
+
+        "Symphony",
+
+        "Experience",
+
+        "Masterpiece",
+
+        "Ensemble",
+
+        "Composition",
+
+        "Medley",
+
+        "Affair"
+
+    ];
+
+
+    const style =
+        styles[Math.floor(Math.random() * styles.length)];
+
+
+    const ending =
+        endings[Math.floor(Math.random() * endings.length)];
+
+
+    let name;
+
+
+    if (ingredients.length === 1) {
+
+        name =
+            style + " " +
+            ingredients[0] +
+            " " +
+            ending;
+
+    }
+
+    else if (ingredients.length === 2) {
+
+        name =
+            style + " " +
+            ingredients[0] +
+            " & " +
+            ingredients[1] +
+            " " +
+            ending;
+
+    }
+
+    else {
+
+        name =
+            style + " " +
+            ingredients[0] +
+            "–" +
+            ingredients[1] +
+            "–" +
+            ingredients[2] +
+            " " +
+            ending;
+
+    }
+
+
+    const descriptions = [
+
+        "A bold culinary interpretation that absolutely did not need this much confidence.",
+
+        "An innovative gastronomic concept created by people who take lunch far too seriously.",
+
+        "A sophisticated fusion of flavours that sounds considerably more expensive than it actually is.",
+
+        "A revolutionary culinary experience that may or may not be acceptable to a professional chef.",
+
+        "An elegant reimagining of ordinary ingredients with absolutely unnecessary levels of sophistication.",
+
+        "A modern masterpiece that would probably cost ₹1,299 at a restaurant with suspiciously small portions."
+
+    ];
+
+
+    const description =
+        descriptions[
+            Math.floor(Math.random() * descriptions.length)
+        ];
+
+
+    document.getElementById("foodName").textContent =
+        name;
+
+
+    document.getElementById("description").textContent =
+        description;
+
+
+    const result = document.getElementById("result");
+    result.style.display = "block";
+    result.classList.remove("is-visible");
+    void result.offsetWidth;
+    result.classList.add("is-visible");
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>

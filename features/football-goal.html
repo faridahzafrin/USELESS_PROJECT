@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Kick It, Bro! ⚽</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #fff8d9;
+            color: #29243d;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #ffd84d;
+            border: 4px solid #29243d;
+            border-radius: 30px;
+            padding: 10px 20px;
+            font-weight: 900;
+            font-size: 14px;
+            box-shadow: 5px 5px 0 #29243d;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 55px;
+            margin: 5px 0;
+            font-weight: 1000;
+            letter-spacing: -2px;
+        }
+
+        .subtitle {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 25px;
+        }
+
+        /* FOOTBALL FIELD */
+
+        .stadium {
+            position: relative;
+            width: 100%;
+            height: 520px;
+            background: #77c96b;
+            border: 5px solid #29243d;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 10px 10px 0 #29243d;
+        }
+
+        /* SKY */
+
+        .sky {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60%;
+            background: #aee8ff;
+        }
+
+        .cloud {
+            position: absolute;
+            background: white;
+            border-radius: 50px;
+            width: 120px;
+            height: 35px;
+            opacity: .9;
+        }
+
+        .cloud::before,
+        .cloud::after {
+            content: "";
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .cloud::before {
+            width: 50px;
+            height: 50px;
+            left: 20px;
+            bottom: 10px;
+        }
+
+        .cloud::after {
+            width: 65px;
+            height: 65px;
+            right: 15px;
+            bottom: 5px;
+        }
+
+        .cloud1 {
+            top: 50px;
+            left: 10%;
+        }
+
+        .cloud2 {
+            top: 100px;
+            right: 12%;
+            transform: scale(.7);
+        }
+
+        /* CROWD */
+
+        .crowd {
+            position: absolute;
+            top: 155px;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background: repeating-linear-gradient(
+                90deg,
+                #29243d 0px,
+                #29243d 12px,
+                #ff6fae 12px,
+                #ff6fae 24px,
+                #ffd84d 24px,
+                #ffd84d 36px,
+                #8de0c0 36px,
+                #8de0c0 48px
+            );
+            border-top: 5px solid #29243d;
+            border-bottom: 5px solid #29243d;
+        }
+
+        /* FIELD */
+
+        .field {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 65%;
+            background: #77c96b;
+        }
+
+        .field-line {
+            position: absolute;
+            border: 4px solid rgba(255,255,255,.9);
+        }
+
+        .center-line {
+            left: 50%;
+            top: 0;
+            height: 100%;
+            border-left: 4px solid white;
+        }
+
+        .center-circle {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            border: 4px solid white;
+            border-radius: 50%;
+            left: calc(50% - 60px);
+            top: calc(50% - 60px);
+        }
+
+        /* GOAL */
+
+        .goal {
+            position: absolute;
+            right: 5%;
+            bottom: 105px;
+            width: 180px;
+            height: 140px;
+            border: 8px solid white;
+            border-bottom: none;
+            background:
+                repeating-linear-gradient(
+                    45deg,
+                    rgba(255,255,255,.25) 0px,
+                    rgba(255,255,255,.25) 4px,
+                    transparent 4px,
+                    transparent 12px
+                );
+        }
+
+        .goal::after {
+            content: "";
+            position: absolute;
+            left: -8px;
+            right: -8px;
+            bottom: -8px;
+            border-bottom: 8px solid white;
+        }
+
+        /* CHARACTER */
+
+        .character {
+            position: absolute;
+            left: 25%;
+            bottom: 100px;
+            width: 120px;
+            height: 230px;
+            cursor: pointer;
+            z-index: 5;
+            transition: transform .2s;
+        }
+
+        .character:hover {
+            transform: scale(1.05);
+        }
+
+        .head {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 5px solid #29243d;
+            overflow: hidden;
+            margin: auto;
+            background: white;
+        }
+
+        .head img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .body {
+            width: 70px;
+            height: 85px;
+            background: #ff4f91;
+            border: 5px solid #29243d;
+            border-radius: 15px;
+            margin: 5px auto;
+            position: relative;
+        }
+
+        .jersey-number {
+            color: white;
+            font-size: 28px;
+            font-weight: 1000;
+            position: absolute;
+            top: 22px;
+            left: 21px;
+        }
+
+        .arm {
+            position: absolute;
+            width: 18px;
+            height: 75px;
+            background: #f2b27c;
+            border: 5px solid #29243d;
+            border-radius: 20px;
+            top: 85px;
+        }
+
+        .arm.left {
+            left: 10px;
+            transform: rotate(25deg);
+        }
+
+        .arm.right {
+            right: 10px;
+            transform: rotate(-25deg);
+        }
+
+        .leg {
+            position: absolute;
+            width: 22px;
+            height: 75px;
+            background: #29243d;
+            border-radius: 15px;
+            top: 160px;
+        }
+
+        .leg.left {
+            left: 35px;
+        }
+
+        .leg.right {
+            right: 35px;
+        }
+
+        /* FOOTBALL */
+
+        .ball {
+            position: absolute;
+            left: 31%;
+            bottom: 65px;
+            width: 45px;
+            height: 45px;
+            background: white;
+            border: 5px solid #29243d;
+            border-radius: 50%;
+            z-index: 6;
+            transition: none;
+        }
+
+        .ball::after {
+            content: "⚽";
+            position: absolute;
+            font-size: 32px;
+            left: 1px;
+            top: 0px;
+        }
+
+        /* KICK */
+
+        .character.kick {
+            animation: kick .8s ease-in-out;
+        }
+
+        @keyframes kick {
+
+            0% {
+                transform: rotate(0);
+            }
+
+            25% {
+                transform: translateY(-5px) rotate(-6deg);
+            }
+
+            55% {
+                transform: translateY(-5px) rotate(8deg);
+            }
+
+            100% {
+                transform: rotate(0);
+            }
+        }
+
+        /* BALL MISS */
+
+        .ball.kicked {
+            animation: ballKick 1.3s ease-in forwards;
+        }
+
+        @keyframes ballKick {
+
+            0% {
+                left: 31%;
+                bottom: 65px;
+                transform: rotate(0) scale(1);
+            }
+
+            30% {
+                left: 45%;
+                bottom: 230px;
+                transform: rotate(360deg) scale(1.1);
+            }
+
+            60% {
+                left: 65%;
+                bottom: 260px;
+                transform: rotate(720deg) scale(1);
+            }
+
+            100% {
+                left: 92%;
+                bottom: 300px;
+                transform: rotate(1200deg) scale(.75);
+            }
+        }
+
+        /* MISS MESSAGE */
+
+        .goal-message {
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(.5);
+            background: #ff4f91;
+            border: 5px solid #29243d;
+            border-radius: 25px;
+            padding: 20px 30px;
+            font-size: 35px;
+            font-weight: 1000;
+            box-shadow: 8px 8px 0 #29243d;
+            opacity: 0;
+            z-index: 20;
+            pointer-events: none;
+        }
+
+        .goal-message.show {
+            animation: pop .5s forwards;
+        }
+
+        @keyframes pop {
+
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        /* RONALDO MESSAGE */
+
+        .ronaldo-message {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #d9c7ff;
+            border: 4px solid #29243d;
+            border-radius: 20px;
+            padding: 12px 20px;
+            font-size: 18px;
+            font-weight: 900;
+            box-shadow: 5px 5px 0 #29243d;
+            opacity: 0;
+            z-index: 25;
+            width: max-content;
+            max-width: 90%;
+        }
+
+        .ronaldo-message.show {
+            animation: slideUp .5s forwards;
+        }
+
+        @keyframes slideUp {
+
+            from {
+                opacity: 0;
+                transform: translate(-50%, 30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+
+        /* INSTRUCTION */
+
+        .instruction {
+            margin-top: 30px;
+            display: inline-block;
+            background: #8de0c0;
+            border: 4px solid #29243d;
+            border-radius: 20px;
+            padding: 15px 25px;
+            font-size: 18px;
+            font-weight: 1000;
+            box-shadow: 5px 5px 0 #29243d;
+        }
+
+        /* RESET */
+
+        button {
+            margin-top: 20px;
+            padding: 15px 25px;
+            border: 4px solid #29243d;
+            border-radius: 18px;
+            background: #ffd84d;
+            color: #29243d;
+            font-size: 17px;
+            font-weight: 1000;
+            cursor: pointer;
+            box-shadow: 5px 5px 0 #29243d;
+        }
+
+        button:hover {
+            transform: translate(2px, 2px);
+            box-shadow: 3px 3px 0 #29243d;
+        }
+
+        footer {
+            margin-top: 25px;
+            font-weight: 800;
+            font-size: 15px;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 700px) {
+
+            h1 {
+                font-size: 40px;
+            }
+
+            .subtitle {
+                font-size: 16px;
+            }
+
+            .stadium {
+                height: 450px;
+            }
+
+            .character {
+                left: 15%;
+                transform: scale(.8);
+            }
+
+            .goal {
+                right: 2%;
+                transform: scale(.75);
+                transform-origin: bottom right;
+            }
+
+            .goal-message {
+                font-size: 25px;
+                white-space: nowrap;
+            }
+
+            .ronaldo-message {
+                font-size: 14px;
+            }
+        }
+
+    </style>
+
+    <style>
+        :root { --cream: #fff7dc; --navy: #241746; --pink: #f45b91; --yellow: #ffd166; --orange: #f28c52; --mint: #bfe8d0; --lavender: #d8c9f4; --white: #fffdf8; }
+        body { position: relative; overflow-x: hidden; font-family: "Trebuchet MS", "Gill Sans", sans-serif; background: radial-gradient(circle at 12% 12%, rgba(248, 182, 207, .72) 0 110px, transparent 111px), radial-gradient(circle at 92% 88%, rgba(191, 232, 208, .8) 0 130px, transparent 131px), var(--cream); color: var(--navy); }
+        .container { position: relative; max-width: 1080px; padding: clamp(28px, 5vw, 58px); background: var(--white); border: 4px solid var(--navy); border-radius: 34px; box-shadow: 10px 12px 0 var(--navy), 0 24px 45px rgba(36, 23, 70, .16); }
+        .container::before { content: "✦  ⚽  ✦"; position: absolute; top: 18px; right: 28px; color: var(--orange); font-size: 22px; letter-spacing: 5px; }
+        .container::after { content: "FIELD TEST 01"; position: absolute; top: 26px; left: 30px; color: var(--pink); font-size: 10px; font-weight: 900; letter-spacing: 2px; }
+        .badge { position: relative; z-index: 1; margin-bottom: 22px; padding: 9px 18px; color: var(--navy); background: var(--yellow); border: 3px solid var(--navy); border-radius: 999px; box-shadow: 5px 5px 0 var(--navy); font-size: 12px; letter-spacing: 1px; }
+        h1 { position: relative; z-index: 1; color: var(--navy); font-family: "Arial Rounded MT Bold", "Trebuchet MS", sans-serif; font-size: clamp(2.7rem, 7vw, 5.4rem); line-height: .95; letter-spacing: -2px; }
+        .subtitle { position: relative; z-index: 1; color: #66587f; font-size: 18px; line-height: 1.55; }
+        .stadium { position: relative; z-index: 1; height: 520px; margin-top: 32px; border: 5px solid var(--navy); border-radius: 28px; box-shadow: 7px 8px 0 var(--navy); }
+        .sky { background: #bdeaff; }
+        .field { background: #79cb83; }
+        .crowd { border-color: var(--navy); }
+        .head { border-color: var(--navy); box-shadow: 3px 4px 0 var(--yellow); }
+        .body { background: var(--pink); border-color: var(--navy); }
+        .arm { border-color: var(--navy); }
+        .leg { background: var(--navy); }
+        .ball { border-color: var(--navy); box-shadow: 3px 4px 0 var(--yellow); }
+        .instruction { position: relative; z-index: 1; margin-top: 30px; padding: 14px 22px; color: var(--navy); background: var(--mint); border: 4px solid var(--navy); border-radius: 18px; box-shadow: 5px 5px 0 var(--navy); font-family: "Arial Rounded MT Bold", "Trebuchet MS", sans-serif; }
+        .container > button { position: relative; z-index: 1; margin-top: 28px; padding: 15px 25px; color: var(--navy); font-family: inherit; font-size: 17px; font-weight: 900; background: var(--pink); border: 4px solid var(--navy); border-radius: 16px; box-shadow: 5px 6px 0 var(--navy); transition: transform .18s ease, box-shadow .18s ease, background .18s ease; }
+        .container > button:hover { background: #ff77a7; transform: translate(-2px, -3px); box-shadow: 7px 9px 0 var(--navy); }
+        .container > button:active { transform: translate(3px, 3px); box-shadow: 2px 3px 0 var(--navy); }
+        .goal-message { color: var(--navy); background: var(--pink); border-color: var(--navy); box-shadow: 8px 8px 0 var(--navy); font-family: "Arial Rounded MT Bold", "Trebuchet MS", sans-serif; }
+        .ronaldo-message { color: var(--navy); background: var(--lavender); border-color: var(--navy); box-shadow: 5px 5px 0 var(--navy); }
+        footer { position: relative; z-index: 1; color: #66587f; }
+        .football-decor { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+        .football-float { position: absolute; z-index: 0; color: var(--orange); font-size: 28px; opacity: .9; animation: floatFootball 6s ease-in-out infinite; }
+        .float-fries { top: 19%; left: 3%; }
+        .float-star { top: 34%; right: 2%; color: var(--pink); animation-delay: -2s; }
+        .float-bottle { bottom: 20%; left: 3%; font-size: 25px; animation-delay: -3.5s; }
+        .float-tear { bottom: 14%; right: 5%; color: var(--lavender); animation-delay: -1s; }
+        @keyframes floatFootball { 0%, 100% { transform: translate(0, 0) rotate(-8deg); } 50% { transform: translate(8px, -13px) rotate(8deg); } }
+        @media (max-width: 700px) {
+            body { padding: 18px; }
+            .container { padding: 30px 18px; box-shadow: 6px 7px 0 var(--navy); }
+            .container::before { right: 15px; }
+            .container::after { left: 18px; }
+            .stadium { height: 450px; }
+        }
+        @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="football-decor" aria-hidden="true">
+        <span class="football-float float-fries">🍟</span>
+        <span class="football-float float-star">⭐</span>
+        <span class="football-float float-bottle">🧴</span>
+        <span class="football-float float-tear">💧</span>
+    </div>
+
+    <div class="badge">
+        ⚽ 100% UNLICENSED FOOTBALL SCIENCE 🧪
+    </div>
+
+    <h1>Kick It, Bro! ⚽</h1>
+
+    <div class="subtitle">
+        One kick. Zero accuracy. Unlimited confidence. 😭⚽
+    </div>
+
+    <div class="stadium">
+
+        <div class="sky"></div>
+
+        <div class="cloud cloud1"></div>
+        <div class="cloud cloud2"></div>
+
+        <div class="crowd"></div>
+
+        <div class="field">
+
+            <div class="center-line"></div>
+            <div class="center-circle"></div>
+
+        </div>
+
+        <!-- GOAL -->
+
+        <div class="goal"></div>
+
+        <!-- CHARACTER -->
+
+        <div
+            class="character"
+            id="character"
+            onclick="kickBall()"
+        >
+
+            <div class="head">
+                <img
+                    src="../images/football-person.jpeg"
+                    alt="Football player"
+                >
+            </div>
+
+            <div class="body">
+                <div class="jersey-number">10</div>
+            </div>
+
+            <div class="arm left"></div>
+            <div class="arm right"></div>
+
+            <div class="leg left"></div>
+            <div class="leg right"></div>
+
+        </div>
+
+        <!-- BALL -->
+
+        <div
+            class="ball"
+            id="ball"
+        ></div>
+
+        <!-- MISS -->
+
+        <div
+            class="goal-message"
+            id="goalMessage"
+        >
+            MISS!!! 😭⚽💀
+        </div>
+
+        <!-- RONALDO MESSAGE -->
+
+        <div
+            class="ronaldo-message"
+            id="ronaldoMessage"
+        >
+            Ronaldo saw that kick... 👀⚽<br>
+            Ronaldo is disappointed. 😭💀<br>
+            Ronaldo is sad. 😭💔<br>
+        </div>
+
+    </div>
+
+    <div class="instruction">
+        👆 CLICK THE CHARACTER TO KICK! ⚽
+    </div>
+
+    <br>
+
+    <button onclick="resetGame()">
+        🔄 Let Him Try Again 😭
+    </button>
+
+    <footer>
+        Water bottle is my best friend! 🧴😂⚽
+        <br>
+        Hydration > Football Skills 💧🏆
+    </footer>
+
+</div>
+
+
+<script>
+
+    let hasKicked = false;
+
+    function kickBall() {
+
+        if (hasKicked) {
+            return;
+        }
+
+        hasKicked = true;
+
+        const character =
+            document.getElementById("character");
+
+        const ball =
+            document.getElementById("ball");
+
+        const goalMessage =
+            document.getElementById("goalMessage");
+
+        const ronaldoMessage =
+            document.getElementById("ronaldoMessage");
+
+        /* Character kicks */
+
+        character.classList.add("kick");
+
+        /* Ball flies */
+
+        setTimeout(function() {
+
+            ball.classList.add("kicked");
+
+        }, 250);
+
+        /* Show MISS */
+
+        setTimeout(function() {
+
+            goalMessage.classList.add("show");
+
+        }, 1200);
+
+        /* Show Ronaldo disappointment */
+
+        setTimeout(function() {
+
+            ronaldoMessage.classList.add("show");
+
+        }, 1500);
+
+    }
+
+
+    function resetGame() {
+
+        hasKicked = false;
+
+        const character =
+            document.getElementById("character");
+
+        const ball =
+            document.getElementById("ball");
+
+        const goalMessage =
+            document.getElementById("goalMessage");
+
+        const ronaldoMessage =
+            document.getElementById("ronaldoMessage");
+
+
+        character.classList.remove("kick");
+
+        ball.classList.remove("kicked");
+
+        goalMessage.classList.remove("show");
+
+        ronaldoMessage.classList.remove("show");
+
+    }
+
+</script>
+
+</body>
+</html>
