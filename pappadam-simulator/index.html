@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pappadam Breakage Simulator</title>
+  <link rel="stylesheet" href="pappadam.css">
+</head>
+<body class="pappadam-page">
+  <main class="pappadam-shell">
+    <header class="pappadam-hero">
+      <div>
+        <a class="pappadam-brand" href="#top">🍔 FOOD MOOD MACHINE / 🍘 LAB 02</a>
+        <span class="pappadam-badge">100% UNLICENSED FOOD PHYSICS</span>
+        <h1 id="top">🍘 PAPPADAM<br><em>BREAKAGE SIMULATOR</em></h1>
+        <p>Because apparently we needed to know where your pappadam will break.</p>
+      </div>
+      <div class="pappadam-character" aria-hidden="true">
+        <div class="pappadam-bubble">🥲 I know where you're going to break.</div>
+        <div class="pappadam-cartoon">🍘</div>
+      </div>
+    </header>
+
+    <section class="pappadam-card pappadam-upload-card" aria-labelledby="upload-title">
+      <div class="pappadam-section-heading">
+        <div><span class="pappadam-kicker">STEP 01</span><h2 id="upload-title">Upload photographic evidence.</h2></div>
+        <span class="pappadam-sticker">⚠️ NO NUTRITIONISTS</span>
+      </div>
+      <label class="pappadam-dropzone" id="pappadamDropzone" for="pappadamFile">
+        <span class="pappadam-upload-icon">📸</span>
+        <strong>DROP YOUR PAPPADAM HERE</strong>
+        <span>or upload photographic evidence</span>
+        <small>JPG · JPEG · PNG · WEBP · max 10 MB</small>
+        <input id="pappadamFile" type="file" accept="image/jpeg,image/png,image/webp" hidden>
+      </label>
+      <div class="pappadam-preview-row" id="pappadamPreviewRow" hidden>
+        <div class="pappadam-thumb-wrap"><img id="pappadamPreview" alt="Uploaded pappadam preview"></div>
+        <div><strong id="pappadamFileName"></strong><p id="pappadamDimensions"></p><p class="pappadam-note">⚠️ Better lighting = completely questionable accuracy.</p></div>
+      </div>
+      <p class="pappadam-error" id="pappadamError" role="alert"></p>
+      <button class="pappadam-button pappadam-primary" id="pappadamAnalyzeButton" disabled>💥 BREAK MY PAPPADAM</button>
+    </section>
+
+    <section class="pappadam-analysis" id="pappadamAnalysis" aria-live="polite" hidden>
+      <div class="pappadam-card pappadam-analysis-card"><span class="pappadam-kicker">STEP 02</span><div class="pappadam-scanner">🍘<i></i></div><h2 id="pappadamAnalysisMessage">🔬 Calibrating pappadam physics...</h2><div class="pappadam-progress"><i></i></div><small>Do not disturb the extremely unqualified scientists.</small></div>
+    </section>
+
+    <section class="pappadam-results" id="pappadamResults" hidden>
+      <div class="pappadam-card pappadam-result-card">
+        <div class="pappadam-section-heading"><div><span class="pappadam-kicker">STEP 03</span><h2>🎯 PREDICTED BREAK POINT</h2></div><span class="pappadam-sticker">⚠️ QUESTIONABLE ACCURACY</span></div>
+        <div class="pappadam-canvas-wrap"><canvas id="pappadamCanvas" aria-label="Uploaded pappadam with predicted break overlay"></canvas><span class="pappadam-canvas-label">🔴 BREAK HERE</span></div>
+        <div class="pappadam-facts"><div><b id="pappadamLocation">Upper-right quadrant</b><small id="pappadamCoordinates"></small></div><div><b id="pappadamAngle">BREAK ANGLE: 43°</b><small>fracture trajectory</small></div><div><b id="pappadamPersonality">😤 ANGRY CRACKER</b><small>pappadam personality</small></div></div>
+        <div class="pappadam-reason"><h3>🔎 WHY HERE?</h3><p id="pappadamReason"></p></div>
+        <div class="pappadam-score"><div><h3>💥 BREAKABILITY SCORE</h3><small id="pappadamScoreText">Suspicious.</small></div><strong><span id="pappadamScore">0</span>%</strong><div class="pappadam-meter"><i id="pappadamMeter"></i></div><small>⚠️ This score is scientifically questionable.</small></div>
+        <div class="pappadam-actions"><button class="pappadam-button pappadam-primary" id="pappadamSimulateButton">💥 SIMULATE BREAK</button><button class="pappadam-button" id="pappadamRandomButton">🎲 RANDOM BREAK</button><button class="pappadam-button" id="pappadamDownloadButton">📸 SAVE BREAKAGE REPORT</button><button class="pappadam-button" id="pappadamResetButton">🔄 TRY ANOTHER PAPPADAM</button></div>
+        <div class="pappadam-verdict"><span>⚖️ PAPPADAM COURT VERDICT</span><strong id="pappadamVerdict"></strong></div>
+      </div>
+
+      <div class="pappadam-tools">
+        <div class="pappadam-card pappadam-tool-card"><span class="pappadam-kicker">INTERACTIVE SCIENCE</span><h2>👆 WHAT IF I TAP HERE?</h2><p>Tap anywhere on the pappadam to challenge the prediction.</p><div id="pappadamTapResult" class="pappadam-tool-output">Awaiting a reckless tap.</div></div>
+        <div class="pappadam-card pappadam-tool-card"><span class="pappadam-kicker">SURVIVAL TEST</span><h2>🍘 HOW MANY TAPS CAN IT SURVIVE?</h2><p id="pappadamSurvivalText">The pappadam is watching you.</p><button class="pappadam-button" id="pappadamSurvivalButton">👆 TAP THE PAPPADAM</button><div class="pappadam-tap-count"><span id="pappadamTapCount">0</span> taps</div></div>
+      </div>
+    </section>
+    <footer class="pappadam-footer">Built for absolutely no practical purpose · Results may cause unnecessary crunching.</footer>
+  </main>
+  <script type="module" src="pappadam.js"></script>
+</body>
+</html>
