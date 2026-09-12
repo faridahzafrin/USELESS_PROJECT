@@ -95,6 +95,7 @@ No additional software or external dependencies are required to run the project.
 
 # Run
 python3 -m http.server 8000
+PROJECT LINK: https://faridahzafrin.github.io/USELESS_PROJECT/
 
 ### Project Documentation
 For Software:- README.md — Project overview, installation, implementation, features, testing, and deployment details.
