@@ -2,7 +2,7 @@
 
 
 
-# [Project Name] 🎯
+# FOOD LAB 🎯
 
 
 ## Basic Details
@@ -10,12 +10,11 @@
 
 
 ### Team Members
-- Team Lead: FARIDAH ZAFRIN ANSARRI - TKMCE
+- Team Lead: FARIDAH ZAFRIN ANSARI - TKMCE
 - Member 2: ALAKANANDA D - TKMCE
 
 
 ### Project Description
-## Project Description
 
 FOOD LAB is a fun collection of completely unnecessary food-themed web applications. It brings together seven quirky and entertaining features into a single website, each designed to solve a problem that nobody actually has.
 
